@@ -1,64 +1,88 @@
 <template>
   <div class="checkout">
-    <h2>チェックアウト</h2>
+    <h2 class="page-title">チェックアウト</h2>
     <div class="order-summary">
       <h3>注文内容</h3>
-      <ul>
-        <li v-for="item in cartItems" :key="item.id">
-          {{ item.name }} - {{ formatPrice(item.price) }} x {{ item.quantity }}
-        </li>
-      </ul>
-      <p>合計: {{ formatPrice(total) }}</p>
+      <div v-for="item in cartItems" :key="item.id">
+        {{ item.name }} x {{ item.quantity }} - {{ formatPrice(item.price * item.quantity) }}
+      </div>
+      <p>小計: {{ formatPrice(cartTotal) }}円</p>
+      <p>送料: {{ formatPrice(shippingFee) }}円</p>
+      <p>合計: {{ formatPrice(cartTotal + shippingFee) }}円</p>
     </div>
-    <form @submit.prevent="processOrder" class="checkout-form">
-      <div class="form-group">
-        <label for="name">お名前</label>
-        <input id="name" v-model="form.name" required>
+    <form @submit.prevent="submitOrder" class="checkout-form">
+      <div class="shipping-info">
+        <h3>配送情報</h3>
+        <input v-model="shippingInfo.name" placeholder="氏名" required>
+        <input v-model="shippingInfo.phone" placeholder="電話番号" required>
+        <input v-model="shippingInfo.postalCode" placeholder="郵便番号" required>
+        <input v-model="shippingInfo.address" placeholder="住所" required>
+        <input v-model="shippingInfo.email" placeholder="メールアドレス" required>
+        <input v-model="shippingInfo.deliveryDate" type="date" placeholder="配送希望日" required>
       </div>
-      <div class="form-group">
-        <label for="email">メールアドレス</label>
-        <input id="email" v-model="form.email" type="email" required>
+      <div class="payment-info">
+        <h3>支払い情報</h3>
+        <select v-model="paymentInfo.method" required>
+          <option value="">支払い方法を選択</option>
+          <option value="credit_card">クレジットカード</option>
+          <option value="bank_transfer">銀行振込</option>
+        </select>
+        <input v-if="paymentInfo.method === 'credit_card'" v-model="paymentInfo.cardHolder" placeholder="カード名義人" required>
+        <input v-if="paymentInfo.method === 'credit_card'" v-model="paymentInfo.cardNumber" placeholder="カード番号" required>
+        <input v-if="paymentInfo.method === 'credit_card'" v-model="paymentInfo.expiryDate" placeholder="有効期限 (MM/YY)" required>
+        <input v-if="paymentInfo.method === 'credit_card'" v-model="paymentInfo.cvv" placeholder="CVV" required>
       </div>
-      <div class="form-group">
-        <label for="address">住所</label>
-        <textarea id="address" v-model="form.address" required></textarea>
-      </div>
-      <button type="submit" class="btn btn-primary">注文を確定する</button>
+      <button type="submit" class="btn place-order-btn">注文を確定する</button>
     </form>
   </div>
 </template>
 
 <script>
-import { mapState, mapGetters } from 'vuex'
+import { mapState, mapGetters, mapActions } from 'vuex'
 
 export default {
   name: 'CheckoutPage',
   data() {
     return {
-      form: {
+      shippingFee: 500,
+      shippingInfo: {
         name: '',
+        phone: '',
+        postalCode: '',
+        address: '',
         email: '',
-        address: ''
+        deliveryDate: ''
+      },
+      paymentInfo: {
+        method: '',
+        cardHolder: '',
+        cardNumber: '',
+        expiryDate: '',
+        cvv: ''
       }
     }
   },
   computed: {
     ...mapState(['cartItems']),
-    ...mapGetters(['cartTotal']),
-    total() {
-      return this.cartTotal
-    }
+    ...mapGetters(['cartTotal'])
   },
   methods: {
+    ...mapActions(['placeOrder']),
     formatPrice(price) {
-      return `¥${price.toLocaleString()}`
+      return price.toLocaleString()
     },
-    processOrder() {
-      // ここで注文処理を実装します（APIリクエストなど）
-      console.log('Order processed', { items: this.cartItems, total: this.total, customer: this.form })
-      alert('注文が完了しました。ありがとうございます！')
-      this.$store.commit('clearCart')
-      this.$router.push('/')
+    async submitOrder() {
+      try {
+        await this.placeOrder({
+          items: this.cartItems,
+          total: this.cartTotal + this.shippingFee,
+          shippingInfo: this.shippingInfo,
+          paymentInfo: this.paymentInfo
+        })
+        this.$router.push('/order-complete')
+      } catch (error) {
+        console.error('注文処理中にエラーが発生しました:', error)
+      }
     }
   }
 }

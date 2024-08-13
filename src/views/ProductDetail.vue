@@ -1,16 +1,16 @@
 <template>
   <div class="product-detail" v-if="product">
-    <img :src="product.image" :alt="product.name" class="product-image">
+    <img :src="require(`@/assets/${product.image}`)" :alt="product.name" class="product-image">
     <div class="product-info">
       <h2>{{ product.name }}</h2>
-      <p class="price">{{ formatPrice(product.price) }}</p>
+      <p class="price">{{ formatPrice(product.price) }}円</p>
       <p>{{ product.description }}</p>
       <div class="quantity">
         <button @click="decrementQuantity" aria-label="数量を減らす">-</button>
         <input v-model.number="quantity" type="number" min="1" aria-label="数量">
         <button @click="incrementQuantity" aria-label="数量を増やす">+</button>
       </div>
-      <button @click="addToCart" class="btn btn-primary">カートに追加</button>
+      <button @click="addToCartHandler" class="btn btn-primary">カートに追加</button>
     </div>
   </div>
 </template>
@@ -34,7 +34,7 @@ export default {
   methods: {
     ...mapActions(['addToCart']),
     formatPrice(price) {
-      return `¥${price.toLocaleString()}`
+      return price.toLocaleString()
     },
     incrementQuantity() {
       this.quantity++
@@ -42,7 +42,7 @@ export default {
     decrementQuantity() {
       if (this.quantity > 1) this.quantity--
     },
-    addToCart() {
+    addToCartHandler() {
       this.addToCart({ ...this.product, quantity: this.quantity })
       alert('商品がカートに追加されました')
     }

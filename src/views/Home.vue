@@ -8,7 +8,7 @@
         :to="{ name: 'ProductList', query: { category: category.name }}"
         class="category-item"
       >
-        <img :src="category.image" :alt="category.name">
+        <img :src="require(`@/assets/${category.image}`)" :alt="category.name">
         <h3>{{ category.name }}</h3>
       </router-link>
     </div>
@@ -21,10 +21,10 @@ export default {
   data() {
     return {
       categories: [
-        { id: 1, name: 'スマートフォン', image: 'path_to_smartphone_image' },
-        { id: 2, name: 'ノートPC', image: 'path_to_laptop_image' },
-        { id: 3, name: 'スマートウォッチ', image: 'path_to_smartwatch_image' },
-        { id: 4, name: 'ヘッドフォン', image: 'path_to_headphones_image' },
+        { id: 1, name: 'スマートフォン', image: 'category-smartphone.jpg' },
+        { id: 2, name: 'ノートPC', image: 'category-laptop.jpg' },
+        { id: 3, name: 'スマートウォッチ', image: 'category-smartwatch.jpg' },
+        { id: 4, name: 'ヘッドフォン', image: 'category-headphones.jpg' },
       ]
     }
   }
