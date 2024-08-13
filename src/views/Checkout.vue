@@ -6,7 +6,7 @@
         <h3>注文内容</h3>
         <div class="order-items">
           <div v-for="item in cartItems" :key="item.id" class="order-item">
-            <img :src="require(`@/assets/${item.image}`)" :alt="item.name" class="item-image">
+            <img :src="getImageUrl(item.image)" :alt="item.name" class="item-image">
             <div class="item-details">
               <h4>{{ item.name }}</h4>
               <p>数量: {{ item.quantity }}</p>
@@ -23,35 +23,29 @@
       <form @submit.prevent="submitOrder" class="checkout-form">
         <div class="shipping-info">
           <h3>配送情報</h3>
-          <div class="form-row">
-            <div class="form-group">
-              <label for="name">氏名</label>
-              <input id="name" v-model="shippingInfo.name" required>
-            </div>
-            <div class="form-group">
-              <label for="phone">電話番号</label>
-              <input id="phone" v-model="shippingInfo.phone" required>
-            </div>
+          <div class="form-group">
+            <label for="name">氏名</label>
+            <input id="name" v-model="shippingInfo.name" required>
           </div>
-          <div class="form-row">
-            <div class="form-group">
-              <label for="postalCode">郵便番号</label>
-              <input id="postalCode" v-model="shippingInfo.postalCode" required>
-            </div>
-            <div class="form-group">
-              <label for="address">住所</label>
-              <input id="address" v-model="shippingInfo.address" required>
-            </div>
+          <div class="form-group">
+            <label for="phone">電話番号</label>
+            <input id="phone" v-model="shippingInfo.phone" required>
           </div>
-          <div class="form-row">
-            <div class="form-group">
-              <label for="email">メールアドレス</label>
-              <input id="email" v-model="shippingInfo.email" type="email" required>
-            </div>
-            <div class="form-group">
-              <label for="deliveryDate">配送希望日</label>
-              <input id="deliveryDate" v-model="shippingInfo.deliveryDate" type="date" required>
-            </div>
+          <div class="form-group">
+            <label for="postalCode">郵便番号</label>
+            <input id="postalCode" v-model="shippingInfo.postalCode" required>
+          </div>
+          <div class="form-group">
+            <label for="address">住所</label>
+            <input id="address" v-model="shippingInfo.address" required>
+          </div>
+          <div class="form-group">
+            <label for="email">メールアドレス</label>
+            <input id="email" v-model="shippingInfo.email" type="email" required>
+          </div>
+          <div class="form-group">
+            <label for="deliveryDate">配送希望日</label>
+            <input id="deliveryDate" v-model="shippingInfo.deliveryDate" type="date" required>
           </div>
         </div>
         <div class="payment-info">
@@ -65,25 +59,21 @@
             </select>
           </div>
           <div v-if="paymentInfo.method === 'credit_card'">
-            <div class="form-row">
-              <div class="form-group">
-                <label for="cardHolder">カード名義人</label>
-                <input id="cardHolder" v-model="paymentInfo.cardHolder" required>
-              </div>
-              <div class="form-group">
-                <label for="cardNumber">カード番号</label>
-                <input id="cardNumber" v-model="paymentInfo.cardNumber" required>
-              </div>
+            <div class="form-group">
+              <label for="cardHolder">カード名義人</label>
+              <input id="cardHolder" v-model="paymentInfo.cardHolder" required>
             </div>
-            <div class="form-row">
-              <div class="form-group">
-                <label for="expiryDate">有効期限 (MM/YY)</label>
-                <input id="expiryDate" v-model="paymentInfo.expiryDate" required>
-              </div>
-              <div class="form-group">
-                <label for="cvv">CVV</label>
-                <input id="cvv" v-model="paymentInfo.cvv" required>
-              </div>
+            <div class="form-group">
+              <label for="cardNumber">カード番号</label>
+              <input id="cardNumber" v-model="paymentInfo.cardNumber" required>
+            </div>
+            <div class="form-group">
+              <label for="expiryDate">有効期限 (MM/YY)</label>
+              <input id="expiryDate" v-model="paymentInfo.expiryDate" required>
+            </div>
+            <div class="form-group">
+              <label for="cvv">CVV</label>
+              <input id="cvv" v-model="paymentInfo.cvv" required>
             </div>
           </div>
         </div>
@@ -222,13 +212,7 @@ export default {
   box-shadow: 0 2px 4px rgba(0,0,0,0.1);
 }
 
-.form-row {
-  display: flex;
-  gap: 15px;
-}
-
 .form-group {
-  flex: 1;
   margin-bottom: 15px;
 }
 

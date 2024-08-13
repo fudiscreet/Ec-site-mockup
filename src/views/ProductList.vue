@@ -21,7 +21,7 @@
       </aside>
       <main class="products">
         <div v-for="product in filteredProducts" :key="product.id" class="product-card">
-          <img :src="require(`@/assets/${product.image}`)" :alt="product.name" class="product-image">
+          <img :src="getImageUrl(product.image)" :alt="product.name" class="product-image">
           <div class="product-info">
             <h3 class="product-name">{{ product.name }}</h3>
             <p class="product-price" :class="{ 'discounted': product.discountedPrice }">
@@ -76,9 +76,12 @@ export default {
     },
     calculateDiscount(originalPrice, discountedPrice) {
       return Math.round((originalPrice - discountedPrice) / originalPrice * 100)
+    },
+    getImageUrl(imageName) {
+  return require(`@/assets/${imageName}`);
     }
   },
-  created() {
+  created() {   
     const categoryFromQuery = this.$route.query.category
     if (categoryFromQuery) {
       this.selectedCategories = [categoryFromQuery]
