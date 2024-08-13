@@ -6,9 +6,11 @@ Vue.use(Vuex)
 export default new Vuex.Store({
   state: {
     products: [
-      { id: 1, name: '商品1', price: 1000, description: '商品1の説明', image: 'product1.jpg' },
-      { id: 2, name: '商品2', price: 2000, description: '商品2の説明', image: 'product2.jpg' },
-      { id: 3, name: '商品3', price: 3000, description: '商品3の説明', image: 'product3.jpg' },
+      { id: 1, name: 'TechPro スマートフォン', price: 89800, discountedPrice: 79800, category: 'スマートフォン', description: '最新のAI機能搭載、高性能カメラ', image: require('@/assets/smartphone.jpg') },
+      { id: 2, name: 'UltraBook ノートPC', price: 154800, category: 'ノートPC', description: '軽量でパワフルな高性能ノートPC', image: require('@/assets/laptop.jpg') },
+      { id: 3, name: 'FitBit スマートウォッチ', price: 29800, discountedPrice: 24800, category: 'スマートウォッチ', description: '健康管理と通知機能を兼ね備えたスマートウォッチ', image: require('@/assets/smartwatch.jpg') },
+      { id: 4, name: 'SoundMaster ワイヤレスヘッドフォン', price: 32800, category: 'ヘッドフォン', description: 'ノイズキャンセリング機能付きの高音質ヘッドフォン', image: require('@/assets/headphones.jpg') },
+      // 他の商品も追加...
     ],
     cartItems: [],
     orders: []
