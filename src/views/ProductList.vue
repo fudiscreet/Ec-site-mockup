@@ -18,7 +18,7 @@
       </aside>
       <main class="products">
         <div v-for="product in filteredProducts" :key="product.id" class="product-card">
-          <img :src="product.image" :alt="product.name">
+          <img :src="getImageUrl(product.image)" :alt="product.name">
           <h3>{{ product.name }}</h3>
           <p>{{ formatPrice(product.price) }}</p>
           <router-link :to="`/product/${product.id}`" class="btn btn-primary">詳細を見る</router-link>
@@ -53,6 +53,9 @@ export default {
   methods: {
     formatPrice(price) {
       return `¥${price.toLocaleString()}`
+    },
+    getImageUrl(imageName) {
+      return require(`@/assets/${imageName}`)
     }
   },
   created() {

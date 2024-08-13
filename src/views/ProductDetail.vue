@@ -1,6 +1,6 @@
 <template>
   <div class="product-detail" v-if="product">
-    <img :src="require(`@/assets/${product.image}`)" :alt="product.name" class="product-image">
+    <img :src="getImageUrl(product.image)" :alt="product.name" class="product-image">
     <div class="product-info">
       <h2>{{ product.name }}</h2>
       <p class="price">{{ formatPrice(product.price) }}円</p>
@@ -45,9 +45,13 @@ export default {
     addToCartHandler() {
       this.addToCart({ ...this.product, quantity: this.quantity })
       alert('商品がカートに追加されました')
+    },
+    getImageUrl(imageName) {
+      return require(`@/assets/${imageName}`)
     }
   }
 }
+
 </script>
 
 <style scoped>
