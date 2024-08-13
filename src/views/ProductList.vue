@@ -3,15 +3,18 @@
     <h2 class="page-title">商品一覧</h2>
     <div class="filters">
       <div class="search-container">
-        <input v-model="searchQuery" placeholder="商品を検索" class="search-input">
-        <i class="fas fa-search search-icon"></i>
+        <label for="search-input" class="visually-hidden">商品を検索</label>
+        <input id="search-input" v-model="searchQuery" placeholder="商品を検索" class="search-input">
+        <span class="search-icon" aria-hidden="true">🔍</span>
       </div>
       <div class="category-filters">
-        <label v-for="category in categories" :key="category" class="category-checkbox">
-          <input type="checkbox" v-model="selectedCategories" :value="category">
-          <span class="checkmark"></span>
-          {{ category }}
-        </label>
+        <fieldset>
+          <legend class="visually-hidden">カテゴリーフィルター</legend>
+          <div v-for="category in categories" :key="category" class="category-checkbox">
+            <input :id="`category-${category}`" type="checkbox" v-model="selectedCategories" :value="category">
+            <label :for="`category-${category}`">{{ category }}</label>
+          </div>
+        </fieldset>
       </div>
     </div>
     <div class="products">
@@ -33,10 +36,10 @@
           </div>
           <p class="product-description">{{ product.description }}</p>
           <div class="product-actions">
-            <button @click="addToCart(product)" class="btn btn-primary">
-              <i class="fas fa-cart-plus"></i> カートに追加
+            <button @click="addToCart(product)" class="btn btn-primary" aria-label="カートに追加">
+              カートに追加
             </button>
-            <router-link :to="`/product/${product.id}`" class="btn btn-secondary">
+            <router-link :to="`/product/${product.id}`" class="btn btn-secondary" aria-label="詳細を見る">
               詳細を見る
             </router-link>
           </div>
@@ -96,15 +99,14 @@ export default {
 
 .filters {
   display: flex;
-  justify-content: space-between;
-  align-items: center;
+  flex-direction: column;
+  gap: 20px;
   margin-bottom: 30px;
-  flex-wrap: wrap;
 }
 
 .search-container {
   position: relative;
-  flex: 1;
+  width: 100%;
   max-width: 300px;
 }
 
@@ -130,61 +132,32 @@ export default {
   color: #3498db;
 }
 
-.category-filters {
-  display: flex;
-  gap: 20px;
-  flex-wrap: wrap;
+.category-filters fieldset {
+  border: none;
+  padding: 0;
+  margin: 0;
 }
 
 .category-checkbox {
   display: flex;
   align-items: center;
-  cursor: pointer;
-  font-size: 16px;
-  user-select: none;
+  margin-bottom: 10px;
 }
 
 .category-checkbox input {
-  position: absolute;
-  opacity: 0;
-  cursor: pointer;
-}
-
-.checkmark {
-  position: relative;
-  height: 20px;
-  width: 20px;
-  background-color: #eee;
-  border-radius: 4px;
   margin-right: 10px;
 }
 
-.category-checkbox:hover input ~ .checkmark {
-  background-color: #ccc;
-}
-
-.category-checkbox input:checked ~ .checkmark {
-  background-color: #3498db;
-}
-
-.checkmark:after {
-  content: "";
+.visually-hidden {
   position: absolute;
-  display: none;
-}
-
-.category-checkbox input:checked ~ .checkmark:after {
-  display: block;
-}
-
-.category-checkbox .checkmark:after {
-  left: 7px;
-  top: 3px;
-  width: 5px;
-  height: 10px;
-  border: solid white;
-  border-width: 0 2px 2px 0;
-  transform: rotate(45deg);
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
 }
 
 .products {
@@ -301,12 +274,12 @@ export default {
   display: inline-flex;
   align-items: center;
   justify-content: center;
+  flex: 1;
 }
 
 .btn-primary {
   background-color: #3498db;
   color: #fff;
-  flex: 1;
   margin-right: 10px;
 }
 
@@ -317,14 +290,14 @@ export default {
 .btn-secondary {
   background-color: #ecf0f1;
   color: #2c3e50;
-  flex: 1;
 }
 
 .btn-secondary:hover {
   background-color: #bdc3c7;
 }
 
-.btn i {
-  margin-right: 5px;
+.btn:focus {
+  outline: 2px solid #3498db;
+  outline-offset: 2px;
 }
 </style>

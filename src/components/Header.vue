@@ -5,8 +5,8 @@
       <nav class="site-nav">
         <router-link to="/products" class="nav-link">商品一覧</router-link>
         <router-link to="/order-history" class="nav-link">購入履歴</router-link>
-        <router-link to="/cart" class="nav-link cart-icon">
-          <i class="fas fa-shopping-cart"></i>
+        <router-link to="/cart" class="nav-link cart-icon" aria-label="カート">
+          🛒
           <span class="cart-count" v-if="cartItemCount > 0">{{ cartItemCount }}</span>
         </router-link>
       </nav>
@@ -73,14 +73,16 @@ export default {
 }
 
 .cart-icon {
-  font-size: 20px;
+  font-size: 24px;
   position: relative;
+  display: flex;
+  align-items: center;
 }
 
 .cart-count {
   position: absolute;
-  top: -10px;
-  right: -10px;
+  top: -8px;
+  right: -8px;
   background-color: #e74c3c;
   color: #fff;
   border-radius: 50%;
