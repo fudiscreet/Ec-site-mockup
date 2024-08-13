@@ -22,13 +22,19 @@ export default {
 </script>
 
 <style>
+:root {
+  --primary-color: #005a9c;
+  --primary-color-dark: #004080;
+  --text-color: #333;
+  --background-color: #fff;
+  --accent-color: #e74c3c;
+}
+
 body {
-  font-family: 'Arial', sans-serif;
+  font-family: Arial, sans-serif;
+  color: var(--text-color);
+  background-color: var(--background-color);
   line-height: 1.6;
-  color: #333;
-  background-color: #f4f4f4;
-  margin: 0;
-  padding: 0;
 }
 
 #app {
@@ -54,8 +60,13 @@ body {
   transition: background 0.3s ease;
 }
 
-.btn:hover {
-  background: #2980b9;
+.btn-primary {
+  background-color: var(--primary-color);
+  color: white;
+}
+
+.btn-primary:hover {
+  background-color: var(--primary-color-dark);
 }
 
 .footer {
