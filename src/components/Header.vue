@@ -1,20 +1,27 @@
 <template>
   <header class="site-header">
     <div class="container">
-      <h1 class="site-title">ECサイト名</h1>
+      <router-link to="/" class="site-title">TechGear Shop</router-link>
       <nav class="site-nav">
-        <router-link to="/" class="nav-link">ホーム</router-link>
         <router-link to="/products" class="nav-link">商品一覧</router-link>
-        <router-link to="/cart" class="nav-link">カート</router-link>
-        <router-link to="/order-history" class="nav-link">注文履歴</router-link>
+        <router-link to="/order-history" class="nav-link">購入履歴</router-link>
+        <router-link to="/cart" class="nav-link cart-icon">
+          <i class="fas fa-shopping-cart"></i>
+          <span class="cart-count" v-if="cartItemCount > 0">{{ cartItemCount }}</span>
+        </router-link>
       </nav>
     </div>
   </header>
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
+
 export default {
-  name: 'SiteHeader'
+  name: 'SiteHeader',
+  computed: {
+    ...mapGetters(['cartItemCount'])
+  }
 }
 </script>
 
@@ -22,32 +29,63 @@ export default {
 .site-header {
   background-color: #2c3e50;
   color: #fff;
-  padding: 10px 0;
+  padding: 15px 0;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
 }
 
-.site-header .container {
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
   display: flex;
   justify-content: space-between;
   align-items: center;
+  padding: 0 20px;
 }
 
 .site-title {
   font-size: 24px;
-  margin: 0;
+  font-weight: bold;
+  color: #fff;
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+.site-title:hover {
+  color: #3498db;
 }
 
 .site-nav {
   display: flex;
+  align-items: center;
 }
 
 .nav-link {
   color: #fff;
   text-decoration: none;
-  margin-left: 20px;
+  margin-left: 30px;
+  font-weight: bold;
   transition: color 0.3s ease;
+  font-size: 16px;
 }
 
 .nav-link:hover {
   color: #3498db;
+}
+
+.cart-icon {
+  font-size: 20px;
+  position: relative;
+}
+
+.cart-count {
+  position: absolute;
+  top: -10px;
+  right: -10px;
+  background-color: #e74c3c;
+  color: #fff;
+  border-radius: 50%;
+  padding: 2px 6px;
+  font-size: 12px;
+  font-weight: bold;
 }
 </style>
