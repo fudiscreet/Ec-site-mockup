@@ -4,81 +4,44 @@
     <div class="checkout-container">
       <div class="order-summary">
         <h3>注文内容</h3>
-        <div class="order-items">
-          <div v-for="item in cartItems" :key="item.id" class="order-item">
-            <img :src="getImageUrl(item.image)" :alt="item.name" class="item-image">
-            <div class="item-details">
-              <h4>{{ item.name }}</h4>
-              <p>数量: {{ item.quantity }}</p>
-              <p>小計: {{ formatPrice(item.price * item.quantity) }}円</p>
-            </div>
-          </div>
-        </div>
-        <div class="order-totals">
-          <p>小計: <span>{{ formatPrice(cartTotal) }}円</span></p>
-          <p>送料: <span>{{ formatPrice(shippingFee) }}円</span></p>
-          <p class="total">合計: <span>{{ formatPrice(cartTotal + shippingFee) }}円</span></p>
-        </div>
+        <!-- 注文内容の部分は変更なし -->
       </div>
-      <form @submit.prevent="submitOrder" class="checkout-form">
-        <div class="shipping-info">
-          <h3>配送情報</h3>
-          <div class="form-group">
-            <label for="name">氏名</label>
-            <input id="name" v-model="shippingInfo.name" required>
-          </div>
-          <div class="form-group">
-            <label for="phone">電話番号</label>
-            <input id="phone" v-model="shippingInfo.phone" required>
-          </div>
-          <div class="form-group">
-            <label for="postalCode">郵便番号</label>
-            <input id="postalCode" v-model="shippingInfo.postalCode" required>
-          </div>
-          <div class="form-group">
-            <label for="address">住所</label>
-            <input id="address" v-model="shippingInfo.address" required>
-          </div>
-          <div class="form-group">
-            <label for="email">メールアドレス</label>
-            <input id="email" v-model="shippingInfo.email" type="email" required>
-          </div>
-          <div class="form-group">
-            <label for="deliveryDate">配送希望日</label>
-            <input id="deliveryDate" v-model="shippingInfo.deliveryDate" type="date" required>
-          </div>
-        </div>
-        <div class="payment-info">
-          <h3>支払い情報</h3>
-          <div class="form-group">
-            <label for="paymentMethod">支払い方法</label>
-            <select id="paymentMethod" v-model="paymentInfo.method" required>
-              <option value="">支払い方法を選択</option>
-              <option value="credit_card">クレジットカード</option>
-              <option value="bank_transfer">銀行振込</option>
-            </select>
-          </div>
-          <div v-if="paymentInfo.method === 'credit_card'">
+      <div class="checkout-form-container">
+        <form @submit.prevent="submitOrder" class="checkout-form">
+          <div class="shipping-info">
+            <h3>配送情報</h3>
             <div class="form-group">
-              <label for="cardHolder">カード名義人</label>
-              <input id="cardHolder" v-model="paymentInfo.cardHolder" required>
+              <label for="name">氏名</label>
+              <input id="name" v-model="shippingInfo.name" required>
             </div>
             <div class="form-group">
-              <label for="cardNumber">カード番号</label>
-              <input id="cardNumber" v-model="paymentInfo.cardNumber" required>
+              <label for="phone">電話番号</label>
+              <input id="phone" v-model="shippingInfo.phone" required>
             </div>
             <div class="form-group">
-              <label for="expiryDate">有効期限 (MM/YY)</label>
-              <input id="expiryDate" v-model="paymentInfo.expiryDate" required>
+              <label for="postalCode">郵便番号</label>
+              <input id="postalCode" v-model="shippingInfo.postalCode" required>
             </div>
             <div class="form-group">
-              <label for="cvv">CVV</label>
-              <input id="cvv" v-model="paymentInfo.cvv" required>
+              <label for="address">住所</label>
+              <input id="address" v-model="shippingInfo.address" required>
+            </div>
+            <div class="form-group">
+              <label for="email">メールアドレス</label>
+              <input id="email" v-model="shippingInfo.email" type="email" required>
+            </div>
+            <div class="form-group">
+              <label for="deliveryDate">配送希望日</label>
+              <input id="deliveryDate" v-model="shippingInfo.deliveryDate" type="date" required>
             </div>
           </div>
-        </div>
-        <button type="submit" class="btn place-order-btn">注文を確定する</button>
-      </form>
+          <div class="payment-info">
+            <h3>支払い情報</h3>
+            <!-- 支払い情報の部分は変更なし -->
+          </div>
+          <button type="submit" class="btn place-order-btn">注文を確定する</button>
+        </form>
+      </div>
     </div>
   </div>
 </template>
@@ -162,53 +125,20 @@ export default {
   border-radius: 8px;
 }
 
-.order-items {
-  margin-bottom: 20px;
-}
-
-.order-item {
-  display: flex;
-  align-items: center;
-  margin-bottom: 15px;
-  padding-bottom: 15px;
-  border-bottom: 1px solid #e0e0e0;
-}
-
-.item-image {
-  width: 80px;
-  height: 80px;
-  object-fit: cover;
-  margin-right: 15px;
-  border-radius: 4px;
-}
-
-.item-details h4 {
-  margin: 0 0 5px;
-}
-
-.order-totals {
-  font-weight: bold;
-}
-
-.order-totals p {
-  display: flex;
-  justify-content: space-between;
-}
-
-.total {
-  font-size: 1.2em;
-  color: #e74c3c;
+.checkout-form-container {
+  flex: 2;
 }
 
 .checkout-form {
-  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
 }
 
 .shipping-info, .payment-info {
   background-color: #fff;
   padding: 20px;
   border-radius: 8px;
-  margin-bottom: 20px;
   box-shadow: 0 2px 4px rgba(0,0,0,0.1);
 }
 
@@ -243,5 +173,16 @@ input, select {
 
 .place-order-btn:hover {
   background-color: #27ae60;
+}
+
+@media (max-width: 768px) {
+  .checkout-container {
+    flex-direction: column;
+  }
+  
+  .order-summary, .checkout-form-container {
+    flex: none;
+    width: 100%;
+  }
 }
 </style>

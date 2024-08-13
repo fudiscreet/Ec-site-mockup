@@ -78,8 +78,13 @@ export default {
       return Math.round((originalPrice - discountedPrice) / originalPrice * 100)
     },
     getImageUrl(imageName) {
-  return require(`@/assets/${imageName}`);
-    }
+  try {
+    return require(`@/assets/${imageName}`);
+  } catch (e) {
+    console.warn(`Image not found: ${imageName}`);
+    return require('@/assets/placeholder.jpg'); // プレースホルダー画像を用意してください
+  }
+}
   },
   created() {   
     const categoryFromQuery = this.$route.query.category
